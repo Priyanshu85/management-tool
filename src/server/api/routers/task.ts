@@ -1,12 +1,13 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
+import { type PrismaClient } from "@prisma/client";
 import {
   createTRPCRouter,
   protectedProcedure,
 } from "~/server/api/trpc";
 
 const assertProjectMember = async (
-  db: any,
+  db: PrismaClient,
   projectId: string,
   userId: string,
 ) => {

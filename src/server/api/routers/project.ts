@@ -100,7 +100,7 @@ export const projectRouter = createTRPCRouter({
         },
       });
 
-      if (!membership || membership.role !== "OWNER") {
+      if (membership?.role !== "OWNER") {
         throw new TRPCError({ code: "FORBIDDEN", message: "Only the project owner can update settings" });
       }
 
@@ -125,7 +125,7 @@ export const projectRouter = createTRPCRouter({
         },
       });
 
-      if (!membership || membership.role !== "OWNER") {
+      if (membership?.role !== "OWNER") {
         throw new TRPCError({ code: "FORBIDDEN", message: "Only the project owner can delete this project" });
       }
 
@@ -149,7 +149,7 @@ export const projectRouter = createTRPCRouter({
         },
       });
 
-      if (!membership || membership.role !== "OWNER") {
+      if (membership?.role !== "OWNER") {
         throw new TRPCError({ code: "FORBIDDEN", message: "Only the project owner can invite members" });
       }
 
@@ -200,7 +200,7 @@ export const projectRouter = createTRPCRouter({
         },
       });
 
-      if (!membership || membership.role !== "OWNER") {
+      if (membership?.role !== "OWNER") {
         throw new TRPCError({ code: "FORBIDDEN", message: "Only the project owner can remove members" });
       }
 

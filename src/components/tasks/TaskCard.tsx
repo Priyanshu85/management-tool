@@ -70,7 +70,8 @@ export const TaskCard = memo(
         tabIndex={0}
         className={isDragging ? "will-change-transform" : ""}
         style={{
-          ...(props as Record<string, unknown>).style as React.CSSProperties | undefined,
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+          ...((props as Record<string, unknown>).style as React.CSSProperties | undefined ?? {}),
           cursor: isDragging ? "grabbing" : "grab",
         }}
       >

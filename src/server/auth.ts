@@ -6,6 +6,7 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
+import { type GetServerSidePropsContext } from "next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "~/server/db";
 
@@ -18,6 +19,7 @@ declare module "next-auth" {
 }
 
 export const authOptions: NextAuthOptions = {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   adapter: PrismaAdapter(db) as Adapter,
   session: {
     strategy: "jwt",
@@ -81,5 +83,10 @@ export const authOptions: NextAuthOptions = {
   ],
 };
 
-export const getServerAuthSession = (opts?: { req: any; res: any }) =>
-  getServerSession(opts?.req, opts?.res, authOptions);
+export const getServerAuthSession = (ctx?: {
+  req: GetServerSidePropsContext["req"];
+  res: GetServerSidePropsContext["res"];
+}) =>
+  ctx
+    ? getServerSession(ctx.req, ctx.res, authOptions)
+    : getServerSession(authOptions);

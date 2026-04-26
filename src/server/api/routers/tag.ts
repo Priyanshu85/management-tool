@@ -75,7 +75,7 @@ export const tagRouter = createTRPCRouter({
         },
       });
 
-      if (!membership || membership.role !== "OWNER") {
+      if (membership?.role !== "OWNER") {
         throw new TRPCError({ code: "FORBIDDEN", message: "Only the project owner can delete tags" });
       }
 
