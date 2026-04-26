@@ -19,6 +19,65 @@ const priorityConfig = {
   URGENT: { bg: "bg-red-50", text: "text-red-700", dot: "bg-red-400" },
 } as const;
 
+/* ── Skeleton fallback components ── */
+
+function Bone({ className }: { className?: string }) {
+  return <div className={`animate-pulse rounded bg-slate-200 ${className ?? ""}`} />;
+}
+
+function StatsSkeleton() {
+  return (
+    <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {[0, 1, 2, 3].map((i) => (
+        <div key={i} className="rounded-xl border border-slate-200 bg-white p-4">
+          <div className="flex items-center gap-3">
+            <Bone className="h-10 w-10 rounded-lg" />
+            <div className="space-y-2">
+              <Bone className="h-6 w-10" />
+              <Bone className="h-3 w-16" />
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function TaskListSkeleton() {
+  return (
+    <div className="divide-y divide-slate-100">
+      {[0, 1, 2, 3, 4].map((i) => (
+        <div key={i} className="flex items-center gap-4 px-5 py-3.5">
+          <Bone className="h-2 w-2 rounded-full" />
+          <div className="min-w-0 flex-1 space-y-2">
+            <Bone className="h-4 w-3/4" />
+            <Bone className="h-3 w-1/3" />
+          </div>
+          <Bone className="h-5 w-16 rounded-md" />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ProjectListSkeleton() {
+  return (
+    <div className="divide-y divide-slate-100">
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="flex items-center gap-3 px-5 py-3.5">
+          <Bone className="h-8 w-8 rounded-lg" />
+          <div className="flex-1 space-y-2">
+            <Bone className="h-4 w-2/3" />
+            <Bone className="h-3 w-1/2" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ── Page ── */
+
 export default function DashboardPage() {
   const { data: session } = useSession();
   const { data: myTasks, isLoading: tasksLoading } = api.task.myTasks.useQuery();
@@ -54,7 +113,7 @@ export default function DashboardPage() {
       </div>
 
       {/* Stats Grid */}
-      <Skeleton loading={isLoading} name="dashboard-stats" animate="shimmer" transition={300}>
+      <Skeleton loading={isLoading} name="dashboard-stats" animate="shimmer" transition={300} fallback={<StatsSkeleton />}>
         <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard
             label="Open Tasks"
@@ -107,11 +166,13 @@ export default function DashboardPage() {
           <div className="rounded-xl border border-slate-200 bg-white">
             <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4">
               <h2 className="text-base font-semibold text-slate-900">My Tasks</h2>
-              <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">
-                {myTasks?.length ?? 0}
-              </span>
+              {!isLoading && (
+                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600">
+                  {myTasks?.length ?? 0}
+                </span>
+              )}
             </div>
-            <Skeleton loading={isLoading} name="dashboard-tasks" animate="shimmer" transition={300}>
+            <Skeleton loading={isLoading} name="dashboard-tasks" animate="shimmer" transition={300} fallback={<TaskListSkeleton />}>
               <div className="divide-y divide-slate-100">
                 {myTasks && myTasks.length > 0 ? (
                   myTasks.slice(0, 8).map((task) => {
@@ -131,7 +192,7 @@ export default function DashboardPage() {
                         <div className="flex flex-shrink-0 items-center gap-2">
                           {task.deadline && (
                             <span className={`text-xs ${overdue ? "font-medium text-red-600" : "text-slate-400"}`}>
-                              {overdue && "Overdue · "}
+                              {overdue && "Overdue \u00b7 "}
                               {new Date(task.deadline).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                             </span>
                           )}
@@ -194,7 +255,7 @@ export default function DashboardPage() {
                 + New
               </Link>
             </div>
-            <Skeleton loading={isLoading} name="dashboard-projects" animate="shimmer" transition={300}>
+            <Skeleton loading={isLoading} name="dashboard-projects" animate="shimmer" transition={300} fallback={<ProjectListSkeleton />}>
               <div className="divide-y divide-slate-100">
                 {projects && projects.length > 0 ? (
                   projects.map((project) => (
