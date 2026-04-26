@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { type AppType } from "next/app";
 
 import { api } from "~/utils/api";
+import { Layout } from "~/components/layout/Layout";
 
 import "~/styles/globals.css";
 
@@ -14,7 +15,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <div className={GeistSans.className}>
-        <Component {...pageProps} />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
       </div>
     </SessionProvider>
   );
