@@ -12,6 +12,40 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return { props: {} };
 };
 
+function SettingsSkeleton() {
+  return (
+    <div className="mx-auto max-w-2xl">
+      <div className="mb-6 h-7 w-40 animate-pulse rounded bg-gray-200" />
+
+      <div className="mb-8 rounded-lg border border-gray-200 bg-white p-6 space-y-4">
+        <div>
+          <div className="mb-1 h-4 w-12 animate-pulse rounded bg-gray-200" />
+          <div className="h-10 w-full animate-pulse rounded-md bg-gray-200" />
+        </div>
+        <div>
+          <div className="mb-1 h-4 w-20 animate-pulse rounded bg-gray-200" />
+          <div className="h-20 w-full animate-pulse rounded-md bg-gray-200" />
+        </div>
+        <div className="h-9 w-28 animate-pulse rounded-md bg-gray-200" />
+      </div>
+
+      <div className="mb-8 rounded-lg border border-gray-200 bg-white p-6">
+        <div className="mb-3 h-5 w-20 animate-pulse rounded bg-gray-200" />
+        <div className="space-y-2">
+          {[0, 1].map((i) => (
+            <div key={i} className="flex items-center justify-between rounded-md border border-gray-200 px-3 py-2">
+              <div className="flex items-center gap-2">
+                <div className="h-4 w-28 animate-pulse rounded bg-gray-200" />
+                <div className="h-4 w-14 animate-pulse rounded bg-gray-200" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ProjectSettingsPage() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
@@ -45,7 +79,7 @@ export default function ProjectSettingsPage() {
     });
   };
 
-  if (isLoading) return <p className="text-gray-500">Loading...</p>;
+  if (isLoading) return <SettingsSkeleton />;
   if (!project) return <p className="text-red-500">Project not found</p>;
 
   const isOwner = project.currentUserRole === "OWNER";

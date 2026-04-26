@@ -3,10 +3,22 @@ import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 import { api } from "~/utils/api";
 
+function SidebarProjectsSkeleton() {
+  return (
+    <div className="space-y-1">
+      {[0, 1, 2].map((i) => (
+        <div key={i} className="flex items-center rounded-md px-3 py-2">
+          <div className="h-4 w-full animate-pulse rounded bg-gray-200" style={{ maxWidth: `${100 - i * 20}px` }} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function Sidebar() {
   const router = useRouter();
   const { data: session } = useSession();
-  const { data: projects } = api.project.list.useQuery(undefined, {
+  const { data: projects, isLoading } = api.project.list.useQuery(undefined, {
     enabled: !!session,
   });
 
@@ -45,7 +57,9 @@ export function Sidebar() {
             </Link>
           </div>
 
-          {projects?.map((project) => (
+          {isLoading && <SidebarProjectsSkeleton />}
+
+          {!isLoading && projects?.map((project) => (
             <Link
               key={project.id}
               href={`/projects/${project.id}`}
@@ -59,7 +73,7 @@ export function Sidebar() {
             </Link>
           ))}
 
-          {projects?.length === 0 && (
+          {!isLoading && projects?.length === 0 && (
             <p className="px-3 py-2 text-xs text-gray-400">No projects yet</p>
           )}
         </div>

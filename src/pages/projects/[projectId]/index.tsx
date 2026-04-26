@@ -12,6 +12,52 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return { props: {} };
 };
 
+function BoardSkeleton() {
+  return (
+    <div>
+      {/* Header skeleton */}
+      <div className="mb-4 flex items-center justify-between">
+        <div className="h-5 w-16 animate-pulse rounded bg-gray-200" />
+        <div className="h-8 w-20 animate-pulse rounded-md bg-gray-200" />
+      </div>
+      {/* Columns skeleton */}
+      <div className="grid grid-cols-4 gap-4">
+        {["To Do", "In Progress", "In Review", "Done"].map((label) => (
+          <div key={label} className="rounded-lg bg-gray-100 p-3">
+            <div className="mb-3 flex items-center justify-between">
+              <span className="text-sm font-semibold text-gray-700">{label}</span>
+              <div className="h-4 w-4 animate-pulse rounded bg-gray-200" />
+            </div>
+            <div className="space-y-2">
+              {[0, 1].map((i) => (
+                <div key={i} className="rounded-lg border border-gray-200 bg-white p-3">
+                  <div className="mb-2 h-4 w-3/4 animate-pulse rounded bg-gray-200" />
+                  <div className="flex items-center justify-between">
+                    <div className="h-5 w-14 animate-pulse rounded-full bg-gray-200" />
+                    <div className="h-5 w-5 animate-pulse rounded-full bg-gray-200" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function HeaderSkeleton() {
+  return (
+    <div className="mb-6 flex items-center justify-between">
+      <div>
+        <div className="h-7 w-48 animate-pulse rounded bg-gray-200" />
+        <div className="mt-2 h-4 w-64 animate-pulse rounded bg-gray-200" />
+      </div>
+      <div className="h-9 w-20 animate-pulse rounded-md bg-gray-200" />
+    </div>
+  );
+}
+
 export default function ProjectBoardPage() {
   const router = useRouter();
   const projectId = router.query.projectId as string;
@@ -26,8 +72,15 @@ export default function ProjectBoardPage() {
     { enabled: !!projectId },
   );
 
-  if (projectLoading || tasksLoading) {
-    return <p className="text-gray-500">Loading...</p>;
+  const isLoading = projectLoading || tasksLoading;
+
+  if (isLoading) {
+    return (
+      <div>
+        <HeaderSkeleton />
+        <BoardSkeleton />
+      </div>
+    );
   }
 
   if (!project) {

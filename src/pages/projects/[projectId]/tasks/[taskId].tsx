@@ -12,6 +12,50 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return { props: {} };
 };
 
+function TaskDetailSkeleton() {
+  return (
+    <div className="mx-auto max-w-2xl">
+      <div className="mb-4 h-4 w-24 animate-pulse rounded bg-gray-200" />
+      <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
+        <div className="space-y-4">
+          <div>
+            <div className="mb-1 h-4 w-10 animate-pulse rounded bg-gray-200" />
+            <div className="h-10 w-full animate-pulse rounded-md bg-gray-200" />
+          </div>
+          <div>
+            <div className="mb-1 h-4 w-20 animate-pulse rounded bg-gray-200" />
+            <div className="h-24 w-full animate-pulse rounded-md bg-gray-200" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <div className="mb-1 h-4 w-12 animate-pulse rounded bg-gray-200" />
+              <div className="h-10 w-full animate-pulse rounded-md bg-gray-200" />
+            </div>
+            <div>
+              <div className="mb-1 h-4 w-14 animate-pulse rounded bg-gray-200" />
+              <div className="h-10 w-full animate-pulse rounded-md bg-gray-200" />
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <div className="mb-1 h-4 w-16 animate-pulse rounded bg-gray-200" />
+              <div className="h-10 w-full animate-pulse rounded-md bg-gray-200" />
+            </div>
+            <div>
+              <div className="mb-1 h-4 w-16 animate-pulse rounded bg-gray-200" />
+              <div className="h-10 w-full animate-pulse rounded-md bg-gray-200" />
+            </div>
+          </div>
+          <div className="flex items-center justify-between border-t border-gray-200 pt-4">
+            <div className="h-4 w-20 animate-pulse rounded bg-gray-200" />
+            <div className="h-9 w-28 animate-pulse rounded-md bg-gray-200" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function TaskDetailPage() {
   const router = useRouter();
   const { projectId, taskId } = router.query as { projectId: string; taskId: string };
@@ -62,7 +106,7 @@ export default function TaskDetailPage() {
     });
   };
 
-  if (isLoading) return <p className="text-gray-500">Loading...</p>;
+  if (isLoading) return <TaskDetailSkeleton />;
   if (!task) return <p className="text-red-500">Task not found</p>;
 
   const deadlineValue = task.deadline
