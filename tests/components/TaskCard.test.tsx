@@ -2,10 +2,13 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { TaskCard } from "~/components/tasks/TaskCard";
 
-vi.mock("next/link", () => ({
-  default: ({ children, href }: { children: React.ReactNode; href: string }) => (
-    <a href={href}>{children}</a>
-  ),
+vi.mock("next/router", () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    pathname: "/",
+    query: {},
+    asPath: "/",
+  }),
 }));
 
 describe("TaskCard", () => {
