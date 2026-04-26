@@ -13,8 +13,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
 export default function NewProjectPage() {
   const router = useRouter();
+  const utils = api.useUtils();
   const create = api.project.create.useMutation({
     onSuccess: (project) => {
+      void utils.project.list.invalidate();
       void router.push(`/projects/${project.id}`);
     },
   });

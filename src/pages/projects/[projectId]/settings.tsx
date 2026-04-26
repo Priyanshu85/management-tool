@@ -30,6 +30,7 @@ export default function ProjectSettingsPage() {
 
   const deleteMutation = api.project.delete.useMutation({
     onSuccess: () => {
+      void utils.project.list.invalidate();
       void router.push("/projects");
     },
   });
