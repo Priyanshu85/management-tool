@@ -43,7 +43,10 @@ yarn-error.log*
 *.tsbuildinfo
 
 # idea files
-.idea.superpowers/
+.idea
+
+# sst
+.sst/.superpowers/
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
