@@ -1,5 +1,5 @@
 {
-  "name": "t3-scaffold",
+  "name": "task-management-tool",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -14,7 +14,11 @@
     "lint": "next lint",
     "start": "next start",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "deploy": "sst deploy --stage production",
+    "deploy:dev": "sst deploy --stage dev",
+    "sst:dev": "sst dev",
+    "remove": "sst remove --stage production"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.6.0",

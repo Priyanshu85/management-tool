@@ -5,11 +5,12 @@ export default $config({
     return {
       name: "task-management-tool",
       removal: input?.stage === "production" ? "retain" : "remove",
+      protect: input?.stage === "production",
       home: "aws",
     };
   },
   async run() {
-    new sst.aws.Nextjs("TaskManagementTool", {
+    const site = new sst.aws.Nextjs("TaskManagementTool", {
       environment: {
         DATABASE_URL: process.env.DATABASE_URL!,
         DIRECT_URL: process.env.DIRECT_URL!,
@@ -17,5 +18,9 @@ export default $config({
         NEXTAUTH_URL: process.env.NEXTAUTH_URL!,
       },
     });
+
+    return {
+      url: site.url,
+    };
   },
 });
